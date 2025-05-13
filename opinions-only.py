@@ -38,9 +38,9 @@ t_final = 500                            # final time
 dt = 0.1                                # timestep
 steps = int(np.floor(t_final / dt))     # number of steps
 
-n_l = 5                                 # number of leaders. they prefer A
-n_f = 6                                 # number of followers. they prefer B
-n_u = 10                                # number of uninformed. no preference
+n_l = 10                                 # number of leaders. they prefer A
+n_f = 10                                 # number of followers. they prefer B
+n_u = 0                                # number of uninformed. no preference
 
 dom = 1
 w_blue = 1                              # reference opinions
@@ -66,7 +66,7 @@ k_ul, k_uf, k_uu = 0, 0, 1
 # k_fl, k_ff, k_fu = 1, 1, 1
 # k_ul, k_uf, k_uu = 0, 0, 0
 
-r_w = 1
+r_w = 10
 
 tau_blue = 0.1                            # conviction
 tau_red = 0.01
@@ -124,7 +124,7 @@ for k in range(steps - 1):
 # PLOTS
 # -----------------------------
 
-output_folder = 'figures/aux'
+output_folder = 'figures/energy'
 os.makedirs(output_folder, exist_ok=True)
 
 colors = {
@@ -146,7 +146,7 @@ plot_opinions(axes[1], w_f, final_avg_lf, steps, dom, "Followers", colors['blue'
 plot_opinions(axes[2], w_u, final_avg_lf, steps, dom, "Uninformed", 'k', do_log=True)
 plt.tight_layout()
 
-output_file = os.path.join(output_folder, 'example-1.svg')
+output_file = os.path.join(output_folder, 'opinions-only-10.svg')
 plt.savefig(output_file)
 
 
@@ -160,7 +160,7 @@ ax.set_xlim([1,steps])
 ax.set_xlabel("Time")
 ax.set_ylabel("Energy")
 
-output_file = os.path.join(output_folder, 'energy.svg')
+output_file = os.path.join(output_folder, 'energy-10.svg')
 plt.savefig(output_file)
 
 

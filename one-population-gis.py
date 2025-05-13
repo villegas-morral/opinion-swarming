@@ -98,20 +98,20 @@ l_rep = 0.5
 r_x = 1
 r_w = 0.5
 
-# # Case VIII
-# alpha = 1
-# beta = 5
-# c_att = 100
-# l_att = 1.2
-# c_rep = 350
-# l_rep = 0.8
-# r_x = 1
-# r_w = 0.5
-# # r_x = 0.5
-# # r_w = 1
+# Case VIII
+#alpha = 1
+#beta = 5
+#c_att = 100
+#l_att = 1.2
+#c_rep = 350
+#l_rep = 0.8
+#r_x = 1
+#r_w = 0.5
+# r_x = 0.5
+# r_w = 1
 
-tau_blue = 0
-tau_red = 0
+tau_blue = 0.1
+tau_red = 0.1
 
 nabla_u = lambda r: nabla_morse_potential(r, c_rep, c_att, l_rep, l_att)
 ode = lambda x_step, v_step, w_step: ode_system (x_step, v_step, w_step, n, alpha, beta, nabla_u, r_x, r_w, tau_red, tau_blue)
@@ -164,16 +164,16 @@ os.makedirs(output_folder, exist_ok=True)
 plt.figure()
 plt.scatter(x[-1, :, 0], x[-1, :, 1], color='b', label='Positions')
 plt.quiver(x[-1, :, 0], x[-1, :, 1], v[-1, :, 0], v[-1, :, 1], color='r', label='Velocities')
-plt.xlabel('x', fontsize=14)
-plt.ylabel('y', fontsize=14)
-plt.xticks(fontsize=12)
-plt.yticks(fontsize=12)
+plt.xlabel('x', fontsize=16)
+plt.ylabel('y', fontsize=16)
+plt.xticks(fontsize=16)
+plt.yticks(fontsize=16)
 plt.grid(False)
 plt.title('Velocities at the final time', fontsize=16, fontweight='bold')
 plt.axis('equal')
 plt.legend()
 
-output_file = os.path.join(output_folder, 'case-ex_velocity-new.svg')
+output_file = os.path.join(output_folder, 'case-ii_velocity-gissell.svg')
 plt.savefig(output_file)
 
 
@@ -181,14 +181,14 @@ plt.savefig(output_file)
 
 plt.figure()
 plt.plot(range(steps), w, 'k', alpha=0.2)
-plt.xlabel('timestep', fontsize=14)
-plt.ylabel('opinion', fontsize=14)
-plt.xticks(fontsize=12)
-plt.yticks(fontsize=12)
+plt.xlabel('Time', fontsize=16)
+plt.ylabel('Opinions', fontsize=16)
+plt.xticks(fontsize=16)
+plt.yticks(fontsize=16)
 plt.title('Opinion of each individual', fontsize=16, fontweight='bold')
 plt.grid(False)
 
-output_file = os.path.join(output_folder, 'case-ex_opinion-new.svg')
+output_file = os.path.join(output_folder, 'case-ii_opinion-gissell.svg')
 plt.savefig(output_file)
 
 
@@ -200,22 +200,29 @@ fig, ax = plt.subplots(figsize=(8,6))
 
 ax.scatter(x[-1, :, 0], x[-1, :, 1], color='b', label='Positions')
 ax.quiver(x[-1, :, 0], x[-1, :, 1], v[-1, :, 0], v[-1, :, 1], color='r', label='Velocities')
-ax.set_xlabel('x', fontsize=14)
-ax.set_ylabel('y', fontsize=14)
-ax.tick_params(axis='both', labelsize=12)
+ax.set_xlabel('x', fontsize=18)
+ax.set_ylabel('y', fontsize=18)
+ax.tick_params(axis='both', labelsize=18)
 ax.grid(False)
-ax.set_title('Velocities at the final time', fontsize=16, fontweight='bold')
+ax.set_title('Velocities at the final time', fontsize=18, fontweight='bold')
 ax.axis('equal')
 
 xmin, xmax = ax.get_xlim()
-ax.set_xlim(xmin, xmax + (xmax-xmin)*0.3)
+ax.set_xlim(xmin, xmax + (xmax-xmin)*0.2)
 
-ax_ins = inset_axes(ax, width="30%", height="30%", loc=4, borderpad=1)
+ax_ins = inset_axes(ax, width="20%", height="20%",
+                    loc=4,  # lower right
+                    bbox_to_anchor=(0.0, 0.0, 1, 1),  # move up a bit (0.15 up)
+                    bbox_transform=ax.transAxes,
+                    borderpad=1)
 ax_ins.plot(range(steps), w, 'k', alpha=0.2)
+ax_ins.tick_params(axis='both', which='major', labelsize=12)
+#ax_ins.set_xscale('log')
 ax_ins.set_xticks([])
-ax_ins.set_yticks([])
+#ax_ins.set_yticks([])
+ax_ins.set_title('Opinions', fontsize=16, fontweight='bold')
 
-output_file = os.path.join(output_folder, 'case-ex-new.svg')
+output_file = os.path.join(output_folder, 'case-ii-gissell-2.svg')
 fig.savefig(output_file)
 
 

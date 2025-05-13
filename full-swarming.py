@@ -109,7 +109,7 @@ def opinion_alignment_sum(x1, x2, w1, w2, r_x, r_w):
 
 n_l = 20
 n_f = 50
-n_u = 0
+n_u = 20
 
 n = n_l + n_f + n_u
 
@@ -129,8 +129,8 @@ beta = 0.5
 gammas_red = [1, 1, 0]
 gammas_blue = [1, 1, 0]
 
-tau_blue_l = 0
-tau_red_f = 0
+tau_blue_l = 0.1
+tau_red_f = 0.01
 
 ks = np.array([
     [1, 1, 0],  # ll lf lu
@@ -151,9 +151,13 @@ ode = lambda x_step, v_step, w_step: ode_system(x_step, v_step, w_step, n_l, n_f
 # INTEGRATION STEP
 # --------------------------------------------------
 
+llavor = np.random.randint(9999)
+print(llavor)
+np.random.seed(llavor)
+
 # np.random.seed(4321)      # for case 1b, 4b
 # np.random.seed(2468)      # for case 4c
-np.random.seed(1234)      # for the rest
+# np.random.seed(1234)      # for the rest
 
 x[0] = np.random.uniform(-1, 1, (n, 2))
 v[0] = np.random.uniform(-1, 1, (n, 2))
@@ -212,11 +216,18 @@ momentum = mom_numerator / mom_denominator
 output_folder = 'figures/full-swarming'
 os.makedirs(output_folder, exist_ok=True)
 
-# # Final velocity
+# Final velocity
 
-# v_final = v[-1, :]
-# output_file = os.path.join(output_folder, 'final_velocities.txt')
-# np.savetxt(output_file, v_final, fmt='%.6f', header='vx vy')
+v_final = v[-1, :]
+v_mean = np.mean(v[-1, :], axis=0)
+
+output_file = os.path.join(output_folder, 'final_velocities.txt')
+np.savetxt(output_file, v_final, fmt='%.6f', header='vx vy')
+output_file = os.path.join(output_folder, 'final_mean.txt')
+np.savetxt(output_file, v_mean, fmt='%.6f', header='final mean')
+
+
+
 
 # # Mean of initial conditions
 
@@ -279,7 +290,7 @@ plt.axis('equal')
 # xmin, xmax = plt.xlim()
 # plt.xlim(xmin, xmax + (xmax - xmin) * 0.2)
 
-output_file = os.path.join(output_folder, 'case-1a_velocity.svg')
+output_file = os.path.join(output_folder, 'case-ex_velocity.svg')
 plt.savefig(output_file)
 
 # plt.show()
@@ -298,7 +309,7 @@ plt.yticks(fontsize=12)
 plt.title('Opinion over time', fontsize=16, fontweight='bold')
 plt.grid(False)
 
-output_file = os.path.join(output_folder, 'case-1a_opinion.svg')
+output_file = os.path.join(output_folder, 'case-ex_opinion.svg')
 plt.savefig(output_file)
 
 
@@ -315,7 +326,7 @@ plt.title('Quantities over time', fontsize=16, fontweight='bold')
 plt.legend()
 plt.grid(False)
 
-output_file = os.path.join(output_folder, 'case-1a_quantities.svg')
+output_file = os.path.join(output_folder, 'case-ex_quantities.svg')
 plt.savefig(output_file)
 
 
@@ -344,7 +355,7 @@ ax2.set_ylabel('v_y')
 ax2.set_title('Mean velocity component v_y over time', fontweight='bold')
 ax2.grid(True)
 
-output_file = os.path.join(output_folder, 'case-1a_mean-velocity.svg')
+output_file = os.path.join(output_folder, 'case-ex_mean-velocity.svg')
 fig.savefig(output_file)
 
 
@@ -405,7 +416,7 @@ plt.plot(range(steps), w[:, n_l+n_f:], 'k', linewidth=1.5, alpha=0.2)
 ax_ins_opinion.set_xticks([])
 ax_ins_opinion.set_yticks([])
 
-plt.savefig(os.path.join(output_folder, 'case-1a.svg'))
+plt.savefig(os.path.join(output_folder, 'case-ex.svg'))
 
 
 
